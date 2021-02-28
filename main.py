@@ -16,13 +16,19 @@ def get_fact():
 
     return facts[0].getText()
 
+def get_pigresponse(fact):
+    data = {'input_text': fact}
+    response = requests.post('https://hidden-journey-62459.herokuapp.com/piglatinize/',allow_redirects=False,data=data)
+    url = response.headers['Location']
+    return url
 
 @app.route('/')
 def home():
-    return "FILL ME!"
+    fact = get_fact().strip()
+    pigurl = get_pigresponse(fact)
 
+    return pigurl
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 6787))
     app.run(host='0.0.0.0', port=port)
-
